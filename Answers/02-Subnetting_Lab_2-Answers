@@ -1,0 +1,78 @@
+LAB - 02-Subnetting_Lab_2.pkt
+------------------------------------------------------------
+Três subredes: 2^N > 3 => N=2
+- Subnet 1: 192.168.1.0/26   (192.168.1.0-192.168.01.63)
+- Subnet 2: 192.168.1.64/26  => 192.168.1.64/30 (192.168.1.64-192.168.1.67)
+- Subnet 3: 192.168.1.128/26 (192.168.1.128-192.168.1.191)
+------------------------------------------------------------
+a) Router R1
+!
+enable
+configure terminal
+hostname R1
+no ip domain-lookup
+!
+configure terminal
+interface g0/0/0
+ip address 192.168.1.62 255.255.255.192
+no shutdown
+exit
+interface g0/0/0
+ip address 192.168.1.66 255.255.255.252
+no shutdown
+end
+!
+
+b) Router R2
+!
+enable
+configure terminal
+hostname R2
+no ip domain-lookup
+!
+configure terminal
+int g0/0/1
+ip address 192.168.1.66 255.255.255.252
+no shutdown
+exit
+int g0/0/0
+ip address 192.168.1.190 255.255.255.192
+no shutdown
+end
+!
+
+c) PC1 e PC2
+PC1: IPv4: 192.168.1.1/26 / Default Gateway: 192.168.1.62
+PC12: IPv4: 192.168.1.129/26 / Default Gateway: 192.168.1.190
+
+d) Switch SW1
+!
+enable
+configure terminal
+hostname SW1
+no ip domain-lookup
+!
+configure terminal
+interface vlan 1
+ip address 192.168.1.61 255.255.255.192
+no shutdown
+exit
+ip default-gateway 192.168.1.62
+end
+!
+
+e) Switch SW2
+!
+enable
+configure terminal
+hostname SW12
+no ip domain-lookup
+!
+configure terminal
+interface vlan 1
+ip address 192.168.1.189 255.255.255.192
+no shutdown
+exit
+ip default-gateway 192.168.1.190
+end
+!
