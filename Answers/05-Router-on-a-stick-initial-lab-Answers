@@ -1,0 +1,51 @@
+LAB 05-Router-on-a-stick-initial-lab
+a) Router R1
+!
+enable
+configure terminal
+hostname SW1
+no ip domain-lookup
+!
+interface g0/0
+no shutdown
+exit
+interface g0/0/0.1
+encapsulation dot1Q 1 native
+ip address 10.1.1.254 255.255.255.0
+no shutdown
+exit
+interface g0/0/0.10
+encapsulation dot1Q 10
+ip address 10.1.10.254 255.255.255.0
+no shutdown
+exit
+interface g0/0/0.20
+encapsulation dot1Q 20
+ip address 10.1.20.254 255.255.255.0
+no shutdown
+exit
+!
+
+b) Switch SW1
+!
+enable
+configure terminal
+hostname SW1
+no ip domain-lookup
+!
+vlan 1
+vlan 10
+vlan 20
+exit
+interface vlan 1
+ip address 10.1.1.253 255.255.255.0
+no shutdown
+exit
+ip default-gateway 10.1.1.254
+ip route 0.0.0.0 0.0.0.0 10.1.1.254
+end
+!
+
+c) PC1 e PC2
+PC1: 10.1.10.1/24 / Default Gateway: 10.1.10.254
+PC1: 10.1.20.1/24 / Default Gateway: 10.1.20.254

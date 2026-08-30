@@ -1,0 +1,58 @@
+LAB 04-DHCP-with-VLANs-initial-lab
+a) Router R1
+!
+enable
+configure terminal
+hostname R1
+no ip domain-lookup
+!
+ip dhcp pool vlan10
+default-router 10.1.10.1
+dns-server 10.1.1.254
+exit
+!
+ip dhcp pool vlan20
+default-router 10.1.20.1
+dns-server 10.1.1.254
+exit
+!
+ip dhcp excluded-address 10.1.10.1 10.1.10.10
+ip dhcp excluded-address 10.1.20.1 10.1.20.10
+exit
+!
+ip route 0.0.0.0 0.0.0.0 10.1.1.1
+end
+!
+b) Switch SW1
+!
+enable
+configure terminal
+hostname SW1
+no ip domain-lookup
+!
+ip routing
+interface vlan10
+ip address 10.1.10.1 255.255.255.0
+ip helper-address 10.1.1.254
+exit
+interface vlan20
+ip address 10.1.20.1 255.255.255.0
+ip helper-address 10.1.1.254
+exit
+interface vlan1
+ip address 10.1.1.1 255.255.255.0
+exit
+interface g1/0/1
+switchport mode trunk
+exit
+interface g1/0/2
+switchport mode access
+switchport access vlan10
+exit
+interface g1/0/3
+switchport mode access
+switchport access vlan20
+end
+!
+
+
